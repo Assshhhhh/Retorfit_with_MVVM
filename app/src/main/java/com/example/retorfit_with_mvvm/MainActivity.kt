@@ -13,6 +13,7 @@ import com.example.retorfit_with_mvvm.api.QuotesService
 import com.example.retorfit_with_mvvm.api.RetrofitHelper
 import com.example.retorfit_with_mvvm.model.QuoteList
 import com.example.retorfit_with_mvvm.repository.QuoteRepository
+import com.example.retorfit_with_mvvm.repository.Response
 import com.example.retorfit_with_mvvm.viewmodels.MainViewModel
 import com.example.retorfit_with_mvvm.viewmodels.ViewModelFactory
 import retrofit2.create
@@ -37,7 +38,20 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.quotes.observe(this, Observer {
             //Log.d("RETRO", it.results.toString())
-            Toast.makeText(this@MainActivity, it.results.size.toString(), Toast.LENGTH_SHORT).show()
+            when(it){
+                is Response.Loading -> {}
+                is Response.Success -> {
+                    it.data?.let {
+                        Toast.makeText(this@MainActivity, it.results.size.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                is Response.Error -> {
+                    /*it.errorMessage
+                    Toast.makeText(this@MainActivity, it.errorMessage.toString(), Toast.LENGTH_SHORT).show()*/
+                    Toast.makeText(this@MainActivity, "Some Error Occurred!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         })
 
     }
