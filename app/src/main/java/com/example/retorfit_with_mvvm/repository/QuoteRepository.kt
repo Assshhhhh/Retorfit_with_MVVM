@@ -7,6 +7,7 @@ import com.example.retorfit_with_mvvm.api.QuotesService
 import com.example.retorfit_with_mvvm.model.QuoteList
 import com.example.retorfit_with_mvvm.roomdb.QuoteDB
 import com.example.retorfit_with_mvvm.utils.NetworkUtils
+import kotlin.time.times
 
 class QuoteRepository internal constructor(
     private val quotesService: QuotesService,
@@ -31,6 +32,15 @@ class QuoteRepository internal constructor(
             quotesLiveData.postValue(quoteList)
         }
 
+    }
+
+    suspend fun getBackgroundQuotes() {
+
+        val randomNumber = (Math.random() * 10).toInt() + 1
+        val result = quotesService.getQuotes(randomNumber)
+        if (result?.body() != null){
+            quoteDB.quoteDao().addQuotes(result.body()!!.results)
+        }
     }
 
 }

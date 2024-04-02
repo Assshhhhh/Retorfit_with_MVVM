@@ -72,4 +72,10 @@ dependencies {
     // LiveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
 
+    // Work Manager
+    val work_version = "2.9.0"
+
+    // Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:$work_version")
+
 }
